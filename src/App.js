@@ -10,10 +10,11 @@ import { NavBar } from "./components/navbar/NavBar";
 import { LeftBar } from "./components/leftBar/LeftBar";
 import { RightBar } from "./components/rightBar/RightBar";
 import { useContext } from "react";
-import { DarkModeContext } from "./context";
+import {AuthContext, DarkModeContext} from "./context";
 
 const App = () => {
-  const currentUser = true;
+  const {currentUser} = useContext(AuthContext);
+  console.log(currentUser,'1')
 
   // useContext(DarkModeContext) - обираємо який контекс використати
   const { darkMode } = useContext(DarkModeContext);
