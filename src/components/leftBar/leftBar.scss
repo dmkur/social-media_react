@@ -16,6 +16,10 @@
     //  якщо елементи не вміщаються їх можна прокрутити
     overflow: scroll;
 
+    @include mobile {
+      display: none;
+    }
+
     &::-webkit-scrollbar {
       display: none;
     }

@@ -15,6 +15,14 @@
     //  якщо елементи не вміщаються їх можна прокрутити
     overflow: scroll;
 
+    @include mobile {
+      display: none;
+    }
+
+    @include tablet {
+      display: none;
+    }
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -31,7 +39,8 @@
         box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.09);
         padding: 20px;
         margin-bottom: 20px;
-         background-color: themed("bg");
+        background-color: themed("bg");
+
         span {
           color: gray;
         }
@@ -73,7 +82,7 @@
 
             span {
               font-weight: 500;
-              color:  themed('textColor');
+              color: themed('textColor');
             }
           }
 
