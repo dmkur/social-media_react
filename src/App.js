@@ -14,7 +14,6 @@ import {AuthContext, DarkModeContext} from "./context";
 
 const App = () => {
   const {currentUser} = useContext(AuthContext);
-  console.log(currentUser,'1')
 
   // useContext(DarkModeContext) - обираємо який контекс використати1
   const { darkMode } = useContext(DarkModeContext);
