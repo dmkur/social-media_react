@@ -5,6 +5,8 @@ export * from "./post/Post";
 export * from "./posts/Posts";
 export * from "./rightBar/rightBar.scss";
 export * from "./stories/Stories";
+export * from "./share/Share";
+
 
 
 

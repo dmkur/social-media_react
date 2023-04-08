@@ -10,7 +10,7 @@ const Posts = () => {
                 return res.data
             })
         )
-        console.log(data)
+        // console.log(data)
 
         return (
             <div className={'posts'}>
