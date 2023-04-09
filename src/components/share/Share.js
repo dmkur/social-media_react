@@ -12,6 +12,18 @@ const Share = () => {
     const [desc, setDesc] = useState("");
     // console.log(desc)
 
+    const upload = async () => {
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+
+            const res = await makeRequest.post('/upload', formData)
+            return res.data
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     const {currentUser} = useContext(AuthContext);
 
     const queryClient = useQueryClient()
@@ -23,25 +35,34 @@ const Share = () => {
         },
     })
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault()
-        mutation.mutate({desc})
-
+        let imgURL = ""
+        if (file) imgURL = await upload()
+        mutation.mutate({desc, img: imgURL})
+        setDesc('')
+        setFile(null)
     };
 
     return (
         <div className="share">
             <div className="container">
                 <div className="top">
-                    <img
+                    <div className={'left'}>
+                        <img
                         src={currentUser.profilePic}
                         alt=""
                     />
-                    <input
-                        type="text"
-                        placeholder={`What's on your mind ${currentUser.name}?`}
-                        onChange={(e) => setDesc(e.target.value)}
-                    />
+                        <input
+                            type="text"
+                            placeholder={`What's on your mind ${currentUser.name}?`}
+                            onChange={(e) => setDesc(e.target.value)}
+                            value={desc}
+                        />
+                    </div>
+                    <div className="right">
+                        {file && <img className={'file'} src={URL.createObjectURL(file)} alt={''}/>}
+                    </div>
                 </div>
                 <hr/>
                 <div className="bottom">
