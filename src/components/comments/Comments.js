@@ -31,7 +31,7 @@ const Comments = ({postId}) => {
         setDesc('')
     };
 
-    console.log(desc )
+    console.log(desc)
 
     return (
         <div className={'comments'}>

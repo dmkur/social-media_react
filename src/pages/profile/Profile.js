@@ -9,7 +9,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {Posts} from "../../components";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {makeRequest} from "../../axios";
 import {useLocation} from "react-router-dom";
 import {useContext} from "react";
@@ -18,6 +18,7 @@ import {AuthContext} from "../../context";
 
 const Profile = () => {
     const {currentUser} = useContext(AuthContext);
+
     const userId = parseInt(useLocation().pathname.split('/')[2])
 
     const {isLoading, err, data} = useQuery(["user"], () =>
@@ -26,8 +27,34 @@ const Profile = () => {
         })
     );
 
-    console.log(data, '!1')
+    const {isLoading: risLoading, data: relationshipsData} = useQuery(["relationships"], () =>
+        makeRequest.get('/relationships?followedUserId=' + userId).then((res) => {
+            return res.data
+        })
+    );
 
+    // console.log(relationshipsData, '!1')
+
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation((following) => {
+        // 2.1 якщо following = true - видаляємо підписку
+        if (following) return makeRequest.delete('/relationships?userId=' + userId)
+        // 2.2 якщо following = false - підписe'vjcz
+        return makeRequest.post('/relationships', {userId})
+    }, {
+        onSuccess: () => {
+            // 3 при успіщному запиті, вказуємо, що оновити у []
+            // в нашому випадку це 245 рядок - user
+            queryClient.invalidateQueries(["relationships"])
+        }
+    });
+
+    const handleFollow = () => {
+        // 1. натискання кнопки, якщо звязки містять id поточного юзера(true в 40 рядку)
+        // і якщо не містять (false в 40 рядку)
+        mutation.mutate(relationshipsData.includes(currentUser.id))
+    };
 
     return (
         <div className={'profile'}>
@@ -71,7 +98,12 @@ const Profile = () => {
                                     <span>{isLoading ? 'loading' : data.website}</span>
                                 </div>
                             </div>
-                            { userId === currentUser.id ? (<button>update</button>): <button>Follow</button>}
+                            {risLoading ? "loading" : userId === currentUser.id ? (<button>update</button>) :
+                                <button onClick={handleFollow}>
+                                    {relationshipsData.includes(currentUser.id)
+                                        ? "Following"
+                                        : "Follow"}
+                                </button>}
                         </div>
                         <div className="right">
                             <EmailOutlinedIcon/>
@@ -79,7 +111,7 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <Posts/>
+                <Posts userId={userId}/>
             </div>
         </div>
     )
