@@ -8,15 +8,16 @@ import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {Posts} from "../../components";
+import {Posts, Update} from "../../components";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {makeRequest} from "../../axios";
 import {useLocation} from "react-router-dom";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "../../context";
 
 
 const Profile = () => {
+    const [openUpdate, setOpenUpdate] = useState(false);
     const {currentUser} = useContext(AuthContext);
 
     const userId = parseInt(useLocation().pathname.split('/')[2])
@@ -98,7 +99,8 @@ const Profile = () => {
                                     <span>{isLoading ? 'loading' : data.website}</span>
                                 </div>
                             </div>
-                            {risLoading ? "loading" : userId === currentUser.id ? (<button>update</button>) :
+                            {risLoading ? "loading" : userId === currentUser.id ? (
+                                    <button onClick={() => setOpenUpdate(true)}>update</button>) :
                                 <button onClick={handleFollow}>
                                     {relationshipsData.includes(currentUser.id)
                                         ? "Following"
@@ -113,6 +115,7 @@ const Profile = () => {
                 </div>
                 <Posts userId={userId}/>
             </div>
+            {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data}/>}
         </div>
     )
 };
