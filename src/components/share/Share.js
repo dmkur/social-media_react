@@ -50,7 +50,7 @@ const Share = () => {
                 <div className="top">
                     <div className={'left'}>
                         <img
-                            src={currentUser.profilePic}
+                            src={"/upload/"+currentUser.profilePic}
                             alt=""
                         />
                         <input
