@@ -54,8 +54,8 @@ const Update = ({setOpenUpdate, user}) => {
         <div className={'update'}>
             Update
             <form>
-                <input type="file"/>
-                <input type="file"/>
+                <input type="file" onChange={e => setCover(e.target.files[0])}/>
+                <input type="file" onChange={e => setProfile(e.target.files[0])}/>
                 <input type="text" name={'name'} onChange={handleChange}/>
                 <input type="text" name={'city'} onChange={handleChange}/>
                 <input type="text" name={'website'} onChange={handleChange}/>
